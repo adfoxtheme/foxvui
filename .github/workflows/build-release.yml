@@ -46,8 +46,6 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Install Rust cache
         uses: swatinem/rust-cache@v2
@@ -57,16 +55,9 @@ jobs:
       - name: Install Node dependencies
         run: npm install
 
-      - name: Build Tauri app (macOS Universal)
+      - name: Build Tauri app (macOS)
         if: matrix.platform == 'macos-latest'
-        run: npm run tauri build -- --target universal-apple-darwin
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: npm run tauri build
 
       - name: Build Tauri app (Windows/Linux)
         if: matrix.platform != 'macos-latest'
@@ -78,8 +69,8 @@ jobs:
         with:
           name: Foxvui-macOS
           path: |
-            src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
-            src-tauri/target/universal-apple-darwin/release/bundle/macos/*.app
+            src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/release/bundle/macos/*.app
 
       - name: Upload artifacts (Windows)
         if: matrix.platform == 'windows-latest'

@@ -12,6 +12,7 @@ build
 *.msi
 *.deb
 *.AppImage
+*.dmg
 
 # IDE
 .vscode
@@ -23,3 +24,8 @@ build
 # OS
 .DS_Store
 Thumbs.db
+
+# Temporary
+*.tmp
+*.log
+.env.local
